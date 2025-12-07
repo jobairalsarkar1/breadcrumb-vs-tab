@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Breadcrumb | Tab Navigation",
-  description: "A dashboard layout with tab navigation using Next.js 13 and Tailwind CSS.",
+  description:
+    "A dashboard layout with tab navigation using Next.js 13 and Tailwind CSS.",
 };
 
 export default function RootLayout({
@@ -23,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -115,7 +115,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           onTabClose={handleTabClose}
         />
 
-        <main className="flex-1 bg-gray-200 p-6 overflow-auto">{children}</main>
+        <main className="flex-1 bg-gray-200 h-[calc(100vh - 36px)] overflow-auto">{children}</main>
       </div>
     </div>
   );
