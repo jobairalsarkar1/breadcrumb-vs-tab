@@ -36,11 +36,11 @@ export default function Sidebar({ onTabOpen }: SidebarProps) {
   return (
     <div
       className={`h-screen bg-gray-900 text-white flex flex-col transition-all duration-300 ${
-        collapsed ? "w-20" : "w-64"
+        collapsed ? "w-16" : "w-64"
       }`}
     >
       {/* Collapse Button */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
+      <div className="flex items-center justify-between px-4 py-5 border-b border-gray-700">
         {!collapsed && <h1 className="text-xl font-semibold">Dashboard</h1>}
         <button
           onClick={() => setCollapsed(!collapsed)}
