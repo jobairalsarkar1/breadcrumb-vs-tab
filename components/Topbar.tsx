@@ -28,7 +28,7 @@ export default function Topbar({
         onClick={() => onTabClick("/")}
         className="px-3 border-r border-b border-gray-400 h-full flex items-center hover:bg-gray-100 text-black"
       >
-        <Home size={18} />
+        <Home size={15} />
       </button>
 
       {tabs.map((tab) => {
@@ -48,7 +48,7 @@ export default function Topbar({
             onClick={() => onTabClick(tab.path)}
           >
             {/* ICON + NAME */}
-            <div className="flex items-center gap-2 truncate">
+            <div className="text-xs flex items-center gap-2 truncate">
               {tab.icon}
               <span className="truncate">{tab.name}</span>
             </div>

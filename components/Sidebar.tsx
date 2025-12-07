@@ -1,19 +1,19 @@
 "use client";
 
-import { JSX, useState } from "react";
+import { ReactNode, useState } from "react";
 import {
   LayoutGrid,
   Users,
   ShoppingBag,
   FileText,
   MessageSquare,
-  ChevronLeft,
-  ChevronRight,
+  PanelRightClose,
+  PanelRightOpen,
 } from "lucide-react";
 
 interface MenuItem {
   name: string;
-  icon: JSX.Element;
+  icon: ReactNode;
   path: string;
 }
 
@@ -48,7 +48,7 @@ export default function Sidebar({ onTabOpen }: SidebarProps) {
             collapsed && "w-full flex items-center justify-center"
           }`}
         >
-          {collapsed ? <ChevronRight /> : <ChevronLeft />}
+          {collapsed ? <PanelRightClose /> : <PanelRightOpen />}
         </button>
       </div>
 

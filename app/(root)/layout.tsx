@@ -4,7 +4,13 @@ import { ReactNode, useState, useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
-import { FileText, LayoutGrid, MessageCircle, ShoppingBag, Users } from "lucide-react";
+import {
+  FileText,
+  LayoutGrid,
+  MessageCircle,
+  ShoppingBag,
+  Users,
+} from "lucide-react";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -17,12 +23,12 @@ interface Tab {
 }
 
 const menuItems: Tab[] = [
-  { name: "Overview", path: "/", icon: <LayoutGrid size={18} /> },
-  { name: "Users", path: "/users", icon: <Users size={18} /> },
-  { name: "Products", path: "/products", icon: <ShoppingBag size={18} /> },
-  { name: "Posts", path: "/posts", icon: <FileText size={18} /> },
-  { name: "Blogs", path: "/blogs", icon: <FileText size={18} /> },
-  { name: "Comments", path: "/comments", icon: <MessageCircle size={18} /> },
+  { name: "Overview", path: "/", icon: <LayoutGrid size={15} /> },
+  { name: "Users", path: "/users", icon: <Users size={15} /> },
+  { name: "Products", path: "/products", icon: <ShoppingBag size={15} /> },
+  { name: "Posts", path: "/posts", icon: <FileText size={15} /> },
+  { name: "Blogs", path: "/blogs", icon: <FileText size={15} /> },
+  { name: "Comments", path: "/comments", icon: <MessageCircle size={15} /> },
 ];
 
 export default function RootLayout({ children }: RootLayoutProps) {
