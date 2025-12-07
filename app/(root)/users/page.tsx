@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { ChevronRight, ChevronDown, Check } from "lucide-react";
 
-// Types
+// Types (same as before)
 interface Doctor {
   id: string;
   name: string;
@@ -33,7 +33,7 @@ interface SubCategory {
   doctors: Doctor[];
 }
 
-// Mock data
+// Mock data (same as before)
 const initialCategories: Category[] = [
   {
     id: "clinical",
@@ -283,7 +283,8 @@ export default function UsersPage() {
   const toggleDoctor = (
     categoryId: string,
     subCategoryId: string,
-    doctorId: string
+    doctorId: string,
+    doctor: Doctor
   ) => {
     setCategories((prev) =>
       prev.map((cat) => {
@@ -297,14 +298,6 @@ export default function UsersPage() {
                   doctors: sub.doctors.map((doc) => {
                     if (doc.id === doctorId) {
                       const updatedDoc = { ...doc, selected: !doc.selected };
-                      // Update selected doctors list
-                      if (updatedDoc.selected) {
-                        setSelectedDoctors((prev) => [...prev, updatedDoc]);
-                      } else {
-                        setSelectedDoctors((prev) =>
-                          prev.filter((d) => d.id !== doctorId)
-                        );
-                      }
                       return updatedDoc;
                     }
                     return doc;
@@ -318,10 +311,22 @@ export default function UsersPage() {
         return cat;
       })
     );
+
+    // Update selected doctors list directly
+    setSelectedDoctors((prev) => {
+      const isDoctorSelected = prev.some((d) => d.id === doctorId);
+      if (isDoctorSelected) {
+        return prev.filter((d) => d.id !== doctorId);
+      } else {
+        return [...prev, { ...doctor, selected: true }];
+      }
+    });
   };
 
   // Select all doctors in a sub-category
   const selectAllDoctors = (categoryId: string, subCategoryId: string) => {
+    let updatedDoctorsList: Doctor[] = [];
+
     setCategories((prev) =>
       prev.map((cat) => {
         if (cat.id === categoryId) {
@@ -335,23 +340,7 @@ export default function UsersPage() {
                   selected: !allSelected,
                 }));
 
-                // Update selected doctors list
-                if (!allSelected) {
-                  setSelectedDoctors((prev) => {
-                    const currentIds = new Set(prev.map((d) => d.id));
-                    const newDoctors = updatedDoctors.filter(
-                      (d) => !currentIds.has(d.id)
-                    );
-                    return [...prev, ...newDoctors];
-                  });
-                } else {
-                  setSelectedDoctors((prev) =>
-                    prev.filter(
-                      (d) => !updatedDoctors.some((ud) => ud.id === d.id)
-                    )
-                  );
-                }
-
+                updatedDoctorsList = updatedDoctors;
                 return { ...sub, doctors: updatedDoctors };
               }
               return sub;
@@ -361,6 +350,22 @@ export default function UsersPage() {
         return cat;
       })
     );
+
+    // Update selected doctors list
+    setSelectedDoctors((prev) => {
+      if (updatedDoctorsList[0]?.selected) {
+        // Add all doctors from this sub-category
+        const currentIds = new Set(prev.map((d) => d.id));
+        const newDoctors = updatedDoctorsList.filter(
+          (d) => !currentIds.has(d.id)
+        );
+        return [...prev, ...newDoctors];
+      } else {
+        // Remove all doctors from this sub-category
+        const doctorIds = updatedDoctorsList.map((d) => d.id);
+        return prev.filter((d) => !doctorIds.includes(d.id));
+      }
+    });
   };
 
   // Get status color
@@ -390,7 +395,7 @@ export default function UsersPage() {
             <div key={category.id} className="mb-2">
               {/* Main Category */}
               <div
-                className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer"
+                className="flex items-center px-2 hover:bg-gray-50 rounded cursor-pointer"
                 onClick={() => toggleCategory(category.id)}
               >
                 {category.expanded ? (
@@ -403,91 +408,123 @@ export default function UsersPage() {
 
               {/* Sub-categories with connecting lines */}
               {category.expanded &&
-                category.children.map((subCategory, subIndex) => (
-                  <div key={subCategory.id} className="ml-6 relative">
-                    {/* Vertical connecting line */}
-                    <div className="absolute left-[-9px] top-0 bottom-0 w-px bg-gray-500"></div>
+                category.children.map((subCategory, subIndex) => {
+                  const isLastSubCategory =
+                    subIndex === category.children.length - 1;
+                  const hasChildren = subCategory.doctors.length > 0;
 
-                    {/* Sub-category header */}
-                    <div className="relative flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
-                      {/* Horizontal connecting line */}
-                      <div className="absolute -left-2 top-1/2 w-4 h-px bg-gray-500"></div>
+                  return (
+                    <div key={subCategory.id} className="ml-6 py-1 relative">
+                      {/* Vertical line from parent to sub-category */}
                       <div
-                        className="flex items-center"
-                        onClick={() =>
-                          toggleSubCategory(category.id, subCategory.id)
-                        }
-                      >
-                        {subCategory.expanded ? (
-                          <ChevronDown className="w-4 h-4 mr-2" />
-                        ) : (
-                          <ChevronRight className="w-4 h-4 mr-2" />
-                        )}
-                        <span className="text-sm font-medium">
-                          {subCategory.name}
-                        </span>
-                      </div>
-                    </div>
+                        className={`absolute left-[-9px] top-0 w-px bg-gray-500 ${
+                          isLastSubCategory ? "h-6" : "h-full"
+                        }`}
+                      ></div>
 
-                    {/* Doctors list with checkboxes */}
-                    {subCategory.expanded && (
-                      <div className="ml-6 relative">
-                        {/* Vertical line extended */}
-                        <div className="absolute left-[-9px] top-0 bottom-0 w-px bg-gray-500"></div>
+                      {/* Horizontal line connecting to sub-category */}
+                      <div className="absolute left-[-9px] top-6 w-4 h-px bg-gray-500"></div>
 
-                        {/* Select All option */}
-                        <div className="relative flex items-center p-2 hover:bg-gray-50 rounded">
-                          <div className="absolute left-[-9px] top-1/2 w-3 h-px bg-gray-500"></div>
-                          <label className="flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={subCategory.doctors.every(
-                                (d) => d.selected
-                              )}
-                              onChange={() =>
-                                selectAllDoctors(category.id, subCategory.id)
-                              }
-                              className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                            />
-                            <span className="ml-2 text-sm text-gray-600">
-                              Select All
-                            </span>
-                          </label>
+                      {/* Sub-category header */}
+                      <div className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <div
+                          className="flex items-center"
+                          onClick={() =>
+                            toggleSubCategory(category.id, subCategory.id)
+                          }
+                        >
+                          {subCategory.expanded ? (
+                            <ChevronDown className="w-4 h-4 mr-2" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 mr-2" />
+                          )}
+                          <span className="text-sm font-medium">
+                            {subCategory.name}
+                          </span>
                         </div>
+                      </div>
 
-                        {/* Individual doctors */}
-                        {subCategory.doctors.map((doctor, docIndex) => (
+                      {/* Doctors list */}
+                      {subCategory.expanded && hasChildren && (
+                        <div className="ml-6 relative">
+                          {/* Vertical line for doctors list - starts under sub-category chevron */}
                           <div
-                            key={doctor.id}
-                            className="relative flex items-center p-2 hover:bg-gray-50 rounded"
-                          >
-                            {/* Horizontal line for each doctor */}
-                            {docIndex < subCategory.doctors.length - 1 && (
-                              <div className="absolute -left-2 top-1/2 w-7 h-px bg-gray-500"></div>
-                            )}
-                            <label className="flex items-center cursor-pointer ml-4">
+                            className={`absolute left-[-9px] top-0 w-px bg-gray-500 ${
+                              isLastSubCategory ? "h-6" : "h-full"
+                            }`}
+                            style={{ top: "-8px" }}
+                          ></div>
+
+                          {/* Select All option */}
+                          <div className="relative flex items-center p-2 hover:bg-gray-50 rounded">
+                            {/* Horizontal line to Select All */}
+                            <div className="absolute left-[-9px] top-1/2 w-3 h-px bg-gray-500"></div>
+                            <label className="flex items-center cursor-pointer">
                               <input
                                 type="checkbox"
-                                checked={doctor.selected}
+                                checked={subCategory.doctors.every(
+                                  (d) => d.selected
+                                )}
                                 onChange={() =>
-                                  toggleDoctor(
-                                    category.id,
-                                    subCategory.id,
-                                    doctor.id
-                                  )
+                                  selectAllDoctors(category.id, subCategory.id)
                                 }
                                 className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                               />
-                              <span className="ml-2 text-sm">
-                                {doctor.name}
+                              <span className="ml-2 text-sm text-gray-600">
+                                Select All
                               </span>
                             </label>
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+
+                          {/* Individual doctors */}
+                          {subCategory.doctors.map((doctor, docIndex) => {
+                            const isLastDoctor =
+                              docIndex === subCategory.doctors.length - 1;
+                            const isLastInHierarchy =
+                              isLastSubCategory && isLastDoctor;
+
+                            return (
+                              <div
+                                key={doctor.id}
+                                className="relative flex items-center p-2 hover:bg-gray-50 rounded"
+                              >
+                                {/* Horizontal line to doctor */}
+                                <div className="absolute left-[-9px] top-1/2 w-6 h-px bg-gray-500"></div>
+
+                                {/* Vertical line continuation for non-last items */}
+                                {!isLastDoctor && (
+                                  <div
+                                    className="absolute left-[-9px] top-[34px] w-px bg-red-500"
+                                    style={{ height: "calc(100% - 34px)" }}
+                                  ></div>
+                                )}
+
+                                <label className="flex items-center cursor-pointer ml-4">
+                                  <input
+                                    type="checkbox"
+                                    checked={doctor.selected}
+                                    onChange={() =>
+                                      toggleDoctor(
+                                        category.id,
+                                        subCategory.id,
+                                        doctor.id,
+                                        doctor
+                                      )
+                                    }
+                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                  />
+                                  <span className="ml-2 text-sm">
+                                    {doctor.name}
+                                  </span>
+                                </label>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
             </div>
           ))}
         </div>
