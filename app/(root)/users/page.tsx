@@ -406,12 +406,12 @@ export default function UsersPage() {
                 category.children.map((subCategory, subIndex) => (
                   <div key={subCategory.id} className="ml-6 relative">
                     {/* Vertical connecting line */}
-                    <div className="absolute left-3 top-0 bottom-0 w-px bg-gray-300"></div>
+                    <div className="absolute left-[-9px] top-0 bottom-0 w-px bg-gray-500"></div>
 
                     {/* Sub-category header */}
                     <div className="relative flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
                       {/* Horizontal connecting line */}
-                      <div className="absolute left-0 top-1/2 w-3 h-px bg-gray-300"></div>
+                      <div className="absolute -left-2 top-1/2 w-4 h-px bg-gray-500"></div>
                       <div
                         className="flex items-center"
                         onClick={() =>
@@ -433,7 +433,7 @@ export default function UsersPage() {
                     {subCategory.expanded && (
                       <div className="ml-6 relative">
                         {/* Vertical line extended */}
-                        <div className="absolute left-3 top-0 bottom-0 w-px bg-gray-300"></div>
+                        <div className="absolute left-[-9px] top-0 bottom-0 w-px bg-gray-500"></div>
 
                         {/* Select All option */}
                         <div className="relative flex items-center p-2 hover:bg-gray-50 rounded">
@@ -463,7 +463,7 @@ export default function UsersPage() {
                           >
                             {/* Horizontal line for each doctor */}
                             {docIndex < subCategory.doctors.length - 1 && (
-                              <div className="absolute left-0 top-1/2 w-3 h-px bg-gray-300"></div>
+                              <div className="absolute -left-2 top-1/2 w-7 h-px bg-gray-500"></div>
                             )}
                             <label className="flex items-center cursor-pointer ml-4">
                               <input
