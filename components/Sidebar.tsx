@@ -1,7 +1,15 @@
 "use client";
 
 import { JSX, useState } from "react";
-import { LayoutGrid, Users, ShoppingBag, FileText, MessageSquare, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  LayoutGrid,
+  Users,
+  ShoppingBag,
+  FileText,
+  MessageSquare,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 interface MenuItem {
   name: string;
@@ -26,13 +34,19 @@ export default function Sidebar({ onTabOpen }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className={`h-screen bg-gray-900 text-white flex flex-col transition-all duration-300 ${collapsed ? "w-20" : "w-64"}`}>
+    <div
+      className={`h-screen bg-gray-900 text-white flex flex-col transition-all duration-300 ${
+        collapsed ? "w-20" : "w-64"
+      }`}
+    >
       {/* Collapse Button */}
       <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
         {!collapsed && <h1 className="text-xl font-semibold">Dashboard</h1>}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className={`${collapsed && "w-full flex items-center justify-center"}`}
+          className={`${
+            collapsed && "w-full flex items-center justify-center"
+          }`}
         >
           {collapsed ? <ChevronRight /> : <ChevronLeft />}
         </button>
@@ -44,7 +58,9 @@ export default function Sidebar({ onTabOpen }: SidebarProps) {
           <button
             key={item.name}
             onClick={() => onTabOpen(item.path)}
-            className={`flex items-center gap-3 p-3 rounded-md hover:bg-gray-800 transition ${collapsed ? "justify-center" : ""}`}
+            className={`flex items-center gap-3 p-3 rounded-md hover:bg-gray-800 transition ${
+              collapsed ? "justify-center" : ""
+            }`}
           >
             {item.icon}
             {!collapsed && <span>{item.name}</span>}

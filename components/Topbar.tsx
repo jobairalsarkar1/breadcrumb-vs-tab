@@ -15,10 +15,14 @@ interface TopbarProps {
   onTabClose: (path: string) => void;
 }
 
-export default function Topbar({ tabs, activeTab, onTabClick, onTabClose }: TopbarProps) {
+export default function Topbar({
+  tabs,
+  activeTab,
+  onTabClick,
+  onTabClose,
+}: TopbarProps) {
   return (
     <div className="h-9 flex items-center overflow-x-auto bg-white shadow">
-      
       {/* HOME ICON */}
       <button
         onClick={() => onTabClick("/")}
@@ -35,7 +39,11 @@ export default function Topbar({ tabs, activeTab, onTabClick, onTabClose }: Topb
             key={tab.path}
             className={`flex items-center justify-between text-black gap-2 px-4 cursor-pointer 
               border-r border-gray-400 h-full w-[180px] shrink-0
-              ${isActive ? "bg-gray-200 font-semibold" : "border-b bg-white hover:bg-gray-100"}
+              ${
+                isActive
+                  ? "bg-gray-200 font-semibold"
+                  : "border-b bg-white hover:bg-gray-100"
+              }
             `}
             onClick={() => onTabClick(tab.path)}
           >
