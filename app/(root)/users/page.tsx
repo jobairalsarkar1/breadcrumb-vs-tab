@@ -437,7 +437,7 @@ export default function UsersPage() {
 
                         {/* Select All option */}
                         <div className="relative flex items-center p-2 hover:bg-gray-50 rounded">
-                          <div className="absolute left-0 top-1/2 w-3 h-px bg-gray-300"></div>
+                          <div className="absolute left-[-9px] top-1/2 w-3 h-px bg-gray-500"></div>
                           <label className="flex items-center cursor-pointer">
                             <input
                               type="checkbox"
