@@ -1,10 +1,11 @@
 "use client";
 
-import { X } from "lucide-react";
+import { X, Home } from "lucide-react";
 
 interface Tab {
   name: string;
   path: string;
+  icon?: React.ReactNode;
 }
 
 interface TopbarProps {
@@ -16,35 +17,41 @@ interface TopbarProps {
 
 export default function Topbar({ tabs, activeTab, onTabClick, onTabClose }: TopbarProps) {
   return (
-    <div className="h-14 flex items-stretch overflow-x-auto bg-white shadow">
-      {tabs.map((tab, idx) => {
-        const isActive = activeTab === tab.path;
+    <div className="h-9 flex items-center overflow-x-auto bg-white shadow">
+      
+      {/* HOME ICON */}
+      <button
+        onClick={() => onTabClick("/")}
+        className="px-3 border-r border-b border-gray-400 h-full flex items-center hover:bg-gray-100 text-black"
+      >
+        <Home size={18} />
+      </button>
 
-        // Check neighboring tabs
-        const prevTab = tabs[idx - 1];
-        const nextTab = tabs[idx + 1];
-        const roundedLeft = prevTab?.path === activeTab ? "rounded-bl-lg" : "";
-        const roundedRight = nextTab?.path === activeTab ? "rounded-br-lg" : "";
+      {tabs.map((tab) => {
+        const isActive = activeTab === tab.path;
 
         return (
           <div
             key={tab.path}
-            className={`flex items-center justify-between px-4 cursor-pointer select-none border-r border-b w-[200px] shrink-0
-              ${isActive ? "bg-gray-200 border-transparent font-semibold" : "bg-white border-gray-500 hover:bg-gray-100"}
-              ${roundedLeft} ${roundedRight}
+            className={`flex items-center justify-between text-black gap-2 px-4 cursor-pointer 
+              border-r border-gray-400 h-full w-[180px] shrink-0
+              ${isActive ? "bg-gray-200 font-semibold" : "border-b bg-white hover:bg-gray-100"}
             `}
             onClick={() => onTabClick(tab.path)}
           >
-            <span className="text-black mr-2 truncate">{tab.name}</span>
-            {!isActive && (
-              <X
-                className="w-4 h-4 text-gray-500 hover:text-gray-800"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onTabClose(tab.path);
-                }}
-              />
-            )}
+            {/* ICON + NAME */}
+            <div className="flex items-center gap-2 truncate">
+              {tab.icon}
+              <span className="truncate">{tab.name}</span>
+            </div>
+
+            <X
+              className="w-4 h-4 text-gray-500 hover:text-black"
+              onClick={(e) => {
+                e.stopPropagation();
+                onTabClose(tab.path);
+              }}
+            />
           </div>
         );
       })}

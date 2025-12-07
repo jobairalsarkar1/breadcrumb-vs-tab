@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
+import { File, Home, MessageCircle, ShoppingBag, Users } from "lucide-react";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -12,16 +13,16 @@ interface RootLayoutProps {
 interface Tab {
   name: string;
   path: string;
+  icon?: ReactNode;
 }
 
-// Define all menu items
 const menuItems: Tab[] = [
-  { name: "Overview", path: "/" },
-  { name: "Users", path: "/users" },
-  { name: "Products", path: "/products" },
-  { name: "Posts", path: "/posts" },
-  { name: "Blogs", path: "/blogs" },
-  { name: "Comments", path: "/comments" },
+  { name: "Overview", path: "/", icon: <Home size={18} /> },
+  { name: "Users", path: "/users", icon: <Users size={18} /> },
+  { name: "Products", path: "/products", icon: <ShoppingBag size={18} /> },
+  { name: "Posts", path: "/posts", icon: <File size={18} /> },
+  { name: "Blogs", path: "/blogs", icon: <File size={18} /> },
+  { name: "Comments", path: "/comments", icon: <MessageCircle size={18} /> },
 ];
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -30,42 +31,65 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   const [tabs, setTabs] = useState<Tab[]>([]);
 
-  // Ensure the current route is always a tab
+  // Get current tab object (safe + memoized)
+  const currentTab = useMemo(() => {
+    return menuItems.find((m) => m.path === pathname) || null;
+  }, [pathname]);
+
+  // ----- FIXED EFFECT -----
   useEffect(() => {
-    const currentTab = menuItems.find((m) => m.path === pathname);
-    if (currentTab && !tabs.find((t) => t.path === currentTab.path)) {
-      setTabs((prev) => [...prev, currentTab]);
-    }
-  }, [pathname, tabs]);
+    if (!currentTab) return;
+
+    queueMicrotask(() => {
+      setTabs((prev) => {
+        const exists = prev.some((t) => t.path === currentTab.path);
+        return exists ? prev : [...prev, currentTab];
+      });
+    });
+  }, [currentTab]);
 
   const handleTabOpen = (path: string) => {
     const tab = menuItems.find((m) => m.path === path);
-    if (tab && !tabs.find((t) => t.path === tab.path)) {
-      setTabs((prev) => [...prev, tab]);
-    }
-    router.push(path); // navigate to route
+    if (!tab) return;
+
+    setTabs((prev) => {
+      const exists = prev.some((t) => t.path === tab.path);
+      return exists ? prev : [...prev, tab];
+    });
+
+    router.push(path);
   };
 
   const handleTabClick = (path: string) => {
-    router.push(path); // navigate to route
+    router.push(path);
   };
 
   const handleTabClose = (path: string) => {
-    setTabs((prev) => prev.filter((t) => t.path !== path));
-    if (pathname === path) {
-      const remainingTabs = tabs.filter((t) => t.path !== path);
-      router.push(remainingTabs.length ? remainingTabs[remainingTabs.length - 1].path : "/");
-    }
+    setTabs((prev) => {
+      const index = prev.findIndex((t) => t.path === path);
+      const updated = prev.filter((t) => t.path !== path);
+
+      if (pathname === path) {
+        const next = updated[index] || updated[index - 1];
+        router.push(next ? next.path : "/");
+      }
+
+      return updated;
+    });
   };
 
   return (
     <div className="h-screen flex overflow-hidden">
-      {/* Sidebar */}
       <Sidebar onTabOpen={handleTabOpen} />
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Topbar tabs={tabs} activeTab={pathname} onTabClick={handleTabClick} onTabClose={handleTabClose} />
+        <Topbar
+          tabs={tabs}
+          activeTab={pathname}
+          onTabClick={handleTabClick}
+          onTabClose={handleTabClose}
+        />
+
         <main className="flex-1 bg-gray-200 p-6 overflow-auto">{children}</main>
       </div>
     </div>
