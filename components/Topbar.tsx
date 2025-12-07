@@ -22,7 +22,7 @@ export default function Topbar({
   onTabClose,
 }: TopbarProps) {
   return (
-    <div className="h-9 flex items-center overflow-x-auto bg-white shadow">
+    <div className="h-9 flex items-center overflow-x-auto bg-white shadow thin-scrollbar">
       {/* HOME ICON */}
       <button
         onClick={() => onTabClick("/")}
