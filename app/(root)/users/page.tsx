@@ -412,7 +412,7 @@ export default function UsersPage() {
           <h2 className="text-lg font-semibold">Get Appointment</h2>
         </div>
 
-        <div className="px-4 py-3">
+        <div className="px-2 py-3">
           {categories.map((category, catIndex) => (
             <div key={category.id} className="mb-2">
               {/* Main Category */}
@@ -447,23 +447,46 @@ export default function UsersPage() {
                       {/* Horizontal line connecting to sub-category */}
                       <div className="absolute left-[-9px] top-4.5 w-4 h-px bg-gray-500"></div>
 
-                      {/* Sub-category header */}
-                      <div className="flex items-center p-2 rounded cursor-pointer">
-                        <div
-                          className="flex items-center"
-                          onClick={() =>
-                            toggleSubCategory(category.id, subCategory.id)
-                          }
-                        >
-                          {subCategory.expanded ? (
-                            <ChevronDown className="w-4 h-4 mr-2" />
-                          ) : (
-                            <ChevronRight className="w-4 h-4 mr-2" />
-                          )}
-                          <span className="text-sm font-medium">
-                            {subCategory.name}
-                          </span>
+                      {/* Sub-category header with Select All checkbox */}
+                      <div className="flex items-center justify-between p-2 rounded">
+                        <div className="flex items-center">
+                          <div
+                            className="flex items-center cursor-pointer"
+                            onClick={() =>
+                              toggleSubCategory(category.id, subCategory.id)
+                            }
+                          >
+                            {subCategory.expanded ? (
+                              <ChevronDown className="w-4 h-4 mr-2" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4 mr-2" />
+                            )}
+                            <span className="text-sm font-medium">
+                              {subCategory.name}
+                            </span>
+                          </div>
                         </div>
+
+                        {/* Select All checkbox on the same line */}
+                        {hasChildren && (
+                          <div className="flex items-center">
+                            <label className="flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={subCategory.doctors.every(
+                                  (d) => d.selected
+                                )}
+                                onChange={() =>
+                                  selectAllDoctors(category.id, subCategory.id)
+                                }
+                                className="w-3.5 h-3.5 rounded border-gray-300 accent-[#0060AE]"
+                              />
+                              <span className="ml-1 text-sm text-gray-600">
+                                Select All
+                              </span>
+                            </label>
+                          </div>
+                        )}
                       </div>
 
                       {/* Doctors list */}
@@ -476,27 +499,6 @@ export default function UsersPage() {
                             }`}
                             style={{ top: "-8px" }}
                           ></div>
-
-                          {/* Select All option */}
-                          <div className="relative flex items-center p-2 rounded">
-                            {/* Horizontal line to Select All */}
-                            <div className="absolute left-[-9px] top-1/2 w-3 h-px bg-gray-500"></div>
-                            <label className="flex items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={subCategory.doctors.every(
-                                  (d) => d.selected
-                                )}
-                                onChange={() =>
-                                  selectAllDoctors(category.id, subCategory.id)
-                                }
-                                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                              />
-                              <span className="ml-2 text-sm text-gray-600">
-                                Select All
-                              </span>
-                            </label>
-                          </div>
 
                           {/* Individual doctors */}
                           {subCategory.doctors.map((doctor, docIndex) => {
