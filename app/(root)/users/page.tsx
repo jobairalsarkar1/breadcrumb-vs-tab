@@ -241,6 +241,28 @@ const initialCategories: Category[] = [
               },
             ],
           },
+          {
+            id: "doc8",
+            name: "Dr. Alexandra Taylor",
+            specialty: "Radiology",
+            selected: false,
+            appointments: [
+              {
+                id: "a16",
+                patientName: "George Allen",
+                time: "9:00 AM",
+                type: "X-ray",
+                status: "confirmed",
+              },
+              {
+                id: "a17",
+                patientName: "Karen Young",
+                time: "11:00 AM",
+                type: "CT Scan",
+                status: "confirmed",
+              },
+            ],
+          },
         ],
       },
     ],
@@ -383,19 +405,19 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="flex h-full bg-gray-50 text-black">
+    <div className="flex h-full bg-gray-200 text-black">
       {/* Fixed Sidebar */}
-      <div className="w-80 border-r border-gray-200 bg-white overflow-y-auto">
-        <div className="p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold">Appointment Management</h2>
+      <div className="w-80 border-r border-gray-200 bg-gray-200 overflow-y-auto">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <h2 className="text-lg font-semibold">Get Appointment</h2>
         </div>
 
-        <div className="p-4">
+        <div className="px-4 py-3">
           {categories.map((category, catIndex) => (
             <div key={category.id} className="mb-2">
               {/* Main Category */}
               <div
-                className="flex items-center px-2 hover:bg-gray-50 rounded cursor-pointer"
+                className="flex items-center px-2 rounded cursor-pointer"
                 onClick={() => toggleCategory(category.id)}
               >
                 {category.expanded ? (
@@ -403,7 +425,7 @@ export default function UsersPage() {
                 ) : (
                   <ChevronRight className="w-4 h-4 mr-2" />
                 )}
-                <span className="font-medium">{category.name}</span>
+                <span className="font-semibold text-sm">{category.name}</span>
               </div>
 
               {/* Sub-categories with connecting lines */}
@@ -414,19 +436,19 @@ export default function UsersPage() {
                   const hasChildren = subCategory.doctors.length > 0;
 
                   return (
-                    <div key={subCategory.id} className="ml-6 py-1 relative">
+                    <div key={subCategory.id} className="ml-6 py-0 relative">
                       {/* Vertical line from parent to sub-category */}
                       <div
                         className={`absolute left-[-9px] top-0 w-px bg-gray-500 ${
-                          isLastSubCategory ? "h-6" : "h-full"
+                          isLastSubCategory ? "h-4.5" : "h-full"
                         }`}
                       ></div>
 
                       {/* Horizontal line connecting to sub-category */}
-                      <div className="absolute left-[-9px] top-6 w-4 h-px bg-gray-500"></div>
+                      <div className="absolute left-[-9px] top-4.5 w-4 h-px bg-gray-500"></div>
 
                       {/* Sub-category header */}
-                      <div className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                      <div className="flex items-center p-2 rounded cursor-pointer">
                         <div
                           className="flex items-center"
                           onClick={() =>
@@ -450,13 +472,13 @@ export default function UsersPage() {
                           {/* Vertical line for doctors list - starts under sub-category chevron */}
                           <div
                             className={`absolute left-[-9px] top-0 w-px bg-gray-500 ${
-                              isLastSubCategory ? "h-6" : "h-full"
+                              isLastSubCategory ? "h-full" : "h-full"
                             }`}
                             style={{ top: "-8px" }}
                           ></div>
 
                           {/* Select All option */}
-                          <div className="relative flex items-center p-2 hover:bg-gray-50 rounded">
+                          <div className="relative flex items-center p-2 rounded">
                             {/* Horizontal line to Select All */}
                             <div className="absolute left-[-9px] top-1/2 w-3 h-px bg-gray-500"></div>
                             <label className="flex items-center cursor-pointer">
@@ -486,7 +508,7 @@ export default function UsersPage() {
                             return (
                               <div
                                 key={doctor.id}
-                                className="relative flex items-center p-2 hover:bg-gray-50 rounded"
+                                className="relative flex items-center p-2 rounded"
                               >
                                 {/* Horizontal line to doctor */}
                                 <div className="absolute left-[-9px] top-1/2 w-6 h-px bg-gray-500"></div>
@@ -532,17 +554,10 @@ export default function UsersPage() {
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden flex flex-col">
-        <div className="p-6 border-b border-gray-200 bg-white">
-          <h1 className="text-2xl font-bold">Appointments</h1>
-          <p className="text-gray-600 mt-1">
-            {selectedDoctors.length === 0
-              ? "Select doctors to view their appointments"
-              : `Showing appointments for ${selectedDoctors.length} doctor(s)`}
-          </p>
-        </div>
+        <div className="border-b border-gray-200 bg-gray-200 h-[68px]" />
 
         {/* Appointments Grid with Horizontal Scroll */}
-        <div className="flex-1 overflow-x-auto p-6">
+        <div className="flex-1 overflow-x-auto h-[calc(100vh - 104px)]">
           {selectedDoctors.length === 0 ? (
             <div className="flex items-center justify-center h-full text-gray-500">
               <div className="text-center">
@@ -553,10 +568,13 @@ export default function UsersPage() {
               </div>
             </div>
           ) : (
-            <div className="flex gap-6 min-w-max">
+            <div className="flex gap-3 min-w-max h-full">
               {selectedDoctors.map((doctor) => (
-                <div key={doctor.id} className="w-80 flex-shrink-0">
-                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+                <div
+                  key={doctor.id}
+                  className="w-80 h-full shrink-0 bg-[#FFFBEB] border border-gray-400"
+                >
+                  <div className="rounded-lg">
                     {/* Doctor Header */}
                     <div className="p-4 border-b border-gray-200 bg-blue-50">
                       <h3 className="font-semibold text-lg">{doctor.name}</h3>
@@ -576,7 +594,7 @@ export default function UsersPage() {
                       {doctor.appointments.map((appointment) => (
                         <div
                           key={appointment.id}
-                          className="mb-4 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                          className="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
                         >
                           <div className="flex justify-between items-start mb-2">
                             <div>
