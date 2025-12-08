@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronRight, ChevronDown, Check } from "lucide-react";
+import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Types (same as before)
 interface Doctor {
@@ -421,9 +422,9 @@ export default function UsersPage() {
                 onClick={() => toggleCategory(category.id)}
               >
                 {category.expanded ? (
-                  <ChevronDown className="w-4 h-4 mr-2" />
+                  <GoTriangleDown className="w-4 h-4 mr-2 text-gray-500" />
                 ) : (
-                  <ChevronRight className="w-4 h-4 mr-2" />
+                  <GoTriangleRight className="w-4 h-4 mr-2 text-gray-500" />
                 )}
                 <span className="font-semibold text-sm">{category.name}</span>
               </div>
@@ -457,9 +458,9 @@ export default function UsersPage() {
                             }
                           >
                             {subCategory.expanded ? (
-                              <ChevronDown className="w-4 h-4 mr-2" />
+                              <GoTriangleDown className="w-4 h-4 mr-2 text-gray-500" />
                             ) : (
-                              <ChevronRight className="w-4 h-4 mr-2" />
+                              <GoTriangleDown className="w-4 h-4 mr-2 text-gray-500" />
                             )}
                             <span className="text-sm font-medium">
                               {subCategory.name}
@@ -535,7 +536,7 @@ export default function UsersPage() {
                                         doctor
                                       )
                                     }
-                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="w-3.5 h-3.5 rounded border-gray-300 accent-[#0060AE]"
                                   />
                                   <span className="ml-2 text-sm">
                                     {doctor.name}
