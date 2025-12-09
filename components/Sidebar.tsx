@@ -36,7 +36,7 @@ export default function Sidebar({ onTabOpen }: SidebarProps) {
   return (
     <div
       className={`h-screen bg-gray-900 text-white flex flex-col transition-all duration-300 ${
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-16" : "w-68"
       }`}
     >
       {/* Collapse Button */}

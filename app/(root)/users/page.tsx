@@ -151,35 +151,6 @@ const initialCategories: Category[] = [
         ],
       },
       {
-        id: "pain-management",
-        name: "Pain Management",
-        expanded: false,
-        doctors: [
-          {
-            id: "doc5",
-            name: "Dr. Amanda Scott",
-            specialty: "Pain Management",
-            selected: false,
-            appointments: [
-              {
-                id: "a11",
-                patientName: "Brian Clark",
-                time: "9:00 AM",
-                type: "Therapy",
-                status: "confirmed",
-              },
-              {
-                id: "a12",
-                patientName: "Olivia Martinez",
-                time: "2:30 PM",
-                type: "Consultation",
-                status: "confirmed",
-              },
-            ],
-          },
-        ],
-      },
-      {
         id: "surgery",
         name: "Surgery",
         expanded: false,
@@ -406,15 +377,15 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="flex h-full bg-gray-200 text-black">
+    <div className="flex h-full bg-gray-200 text-black gap-3">
       {/* Fixed Sidebar */}
-      <div className="w-80 border-r border-gray-200 bg-gray-200 overflow-y-auto">
+      <div className="w-60 border-r border-gray-200 bg-gray-200 overflow-y-auto">
         <div className="px-4 py-3 border-b border-gray-200">
           <h2 className="text-lg font-semibold">Get Appointment</h2>
         </div>
 
         <div className="px-2 py-3">
-          {categories.map((category, catIndex) => (
+          {categories.map((category) => (
             <div key={category.id} className="mb-2">
               {/* Main Category */}
               <div
@@ -462,7 +433,7 @@ export default function UsersPage() {
                             ) : (
                               <GoTriangleDown className="w-4 h-4 mr-2 text-gray-500" />
                             )}
-                            <span className="text-sm font-medium">
+                            <span className="text-xs font-medium">
                               {subCategory.name}
                             </span>
                           </div>
@@ -482,7 +453,7 @@ export default function UsersPage() {
                                 }
                                 className="w-3.5 h-3.5 rounded border-gray-300 accent-[#0060AE]"
                               />
-                              <span className="ml-1 text-sm text-gray-600">
+                              <span className="ml-1 text-xs text-gray-600">
                                 Select All
                               </span>
                             </label>
@@ -538,7 +509,7 @@ export default function UsersPage() {
                                     }
                                     className="w-3.5 h-3.5 rounded border-gray-300 accent-[#0060AE]"
                                   />
-                                  <span className="ml-2 text-sm">
+                                  <span className="ml-2 text-xs">
                                     {doctor.name}
                                   </span>
                                 </label>
@@ -575,7 +546,7 @@ export default function UsersPage() {
               {selectedDoctors.map((doctor) => (
                 <div
                   key={doctor.id}
-                  className="w-80 h-full shrink-0 bg-[#FFFBEB] border border-gray-400"
+                  className="w-66 h-full shrink-0 bg-[#FFFBEB] border border-gray-400"
                 >
                   <div className="rounded-lg">
                     {/* Doctor Header */}

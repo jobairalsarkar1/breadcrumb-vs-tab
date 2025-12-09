@@ -67,7 +67,7 @@ const TreeNode: FC<{ node: TreeNodeData }> = ({ node }) => {
     <li
       className="
         relative pl-3
-        before:absolute before:top-[14px]
+        before:absolute before:top-3.5
         before:left-[-15px] before:w-[25px] before:h-px 
         before:bg-black
       "
@@ -92,7 +92,7 @@ const TreeNode: FC<{ node: TreeNodeData }> = ({ node }) => {
 
 export default function SidebarTree() {
   return (
-    <div className="w-[260px] h-screen border-r border-gray-300 bg-transparent p-3">
+    <div className="w-[260px] h-full border-r border-gray-300 bg-transparent p-3 overflow-y-auto">
       <h3 className="text-gray-800 mb-1">Categories</h3>
       <TreeNodeList nodes={data} />
     </div>
