@@ -6,10 +6,6 @@ export interface TreeNodeData {
   children?: TreeNodeData[];
 }
 
-interface TreeNodeListProps {
-  nodes: TreeNodeData[];
-}
-
 const data: TreeNodeData[] = [
   {
     label: "Electronics",
@@ -47,9 +43,16 @@ const data: TreeNodeData[] = [
   },
 ];
 
-const TreeNodeList: FC<TreeNodeListProps> = ({ nodes }) => {
+const TreeNodeList: FC<{ nodes: TreeNodeData[] }> = ({ nodes }) => {
   return (
-    <ul className="tree-list">
+    <ul
+      className="
+        relative 
+        ml-5
+        before:absolute before:top-0 before:bottom-3.5 
+        before:left-[-15px] before:w-px before:bg-black
+      "
+    >
       {nodes.map((node, i) => (
         <TreeNode key={i} node={node} />
       ))}
@@ -57,20 +60,26 @@ const TreeNodeList: FC<TreeNodeListProps> = ({ nodes }) => {
   );
 };
 
-interface TreeNodeProps {
-  node: TreeNodeData;
-}
-
-const TreeNode: FC<TreeNodeProps> = ({ node }) => {
+const TreeNode: FC<{ node: TreeNodeData }> = ({ node }) => {
   const [open, setOpen] = useState(true);
 
   return (
-    <li className="tree-item">
-      <div className="tree-row" onClick={() => setOpen(!open)}>
+    <li
+      className="
+        relative pl-3
+        before:absolute before:top-[14px]
+        before:left-[-15px] before:w-[25px] before:h-px 
+        before:bg-black
+      "
+    >
+      <div
+        className="cursor-pointer py-1 text-sm text-black flex items-center gap-1"
+        onClick={() => setOpen(!open)}
+      >
         {node.children ? (
-          <span className="arrow">{open ? "▼" : "▶"}</span>
+          <span className="text-xs">{open ? "▼" : "▶"}</span>
         ) : (
-          <span className="dot">•</span>
+          <span className="text-[10px]">•</span>
         )}
 
         {node.label}
@@ -83,16 +92,8 @@ const TreeNode: FC<TreeNodeProps> = ({ node }) => {
 
 export default function SidebarTree() {
   return (
-    <div
-      style={{
-        width: "260px",
-        height: "100vh",
-        borderRight: "1px solid #ccc",
-        background: "none",
-        padding: "12px",
-      }}
-    >
-      <h3 className="text-gray-800">Categories</h3>
+    <div className="w-[260px] h-screen border-r border-gray-300 bg-transparent p-3">
+      <h3 className="text-gray-800 mb-1">Categories</h3>
       <TreeNodeList nodes={data} />
     </div>
   );
