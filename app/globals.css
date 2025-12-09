@@ -42,3 +42,56 @@ body {
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.35);
 }
+
+
+.tree-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+/* The vertical line */
+.tree-list::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 12px;
+  width: 1px;
+  background: #000;
+}
+
+/* Each item */
+.tree-item {
+  position: relative;
+  padding-left: 12px;
+}
+
+/* Horizontal connector */
+.tree-item::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 14px;
+  width: 25px;
+  height: 1px;
+  background: #010101;
+}
+
+.tree-row {
+  cursor: pointer;
+  padding: 3px 0;
+  font-size: 14px;
+  color: #000;
+}
+
+.arrow {
+  margin-right: 6px;
+  font-size: 12px;
+}
+
+.dot {
+  margin-right: 6px;
+  font-size: 10px;
+}

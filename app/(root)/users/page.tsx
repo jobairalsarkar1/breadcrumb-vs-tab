@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { ChevronRight, ChevronDown, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Types (same as before)
