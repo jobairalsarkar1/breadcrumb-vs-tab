@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { Check } from "lucide-react";
+import { Check, Info } from "lucide-react";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
+import { varients } from "@/lib/constant";
 
 // Types (same as before)
 interface Doctor {
@@ -47,7 +48,7 @@ const initialCategories: Category[] = [
         expanded: false,
         doctors: [
           {
-            id: "doc1",
+            id: "1548",
             name: "Dr. Sarah Johnson",
             specialty: "Cardiology",
             selected: false,
@@ -76,7 +77,7 @@ const initialCategories: Category[] = [
             ],
           },
           {
-            id: "doc2",
+            id: "1549",
             name: "Dr. Michael Chen",
             specialty: "Cardiology",
             selected: false,
@@ -98,7 +99,7 @@ const initialCategories: Category[] = [
             ],
           },
           {
-            id: "doc3",
+            id: "1550",
             name: "Dr. Lisa Wong",
             specialty: "Nephrology",
             selected: false,
@@ -120,7 +121,7 @@ const initialCategories: Category[] = [
             ],
           },
           {
-            id: "doc4",
+            id: "1551",
             name: "Dr. James Wilson",
             specialty: "Neurology",
             selected: false,
@@ -156,7 +157,7 @@ const initialCategories: Category[] = [
         expanded: false,
         doctors: [
           {
-            id: "doc6",
+            id: "1552",
             name: "Dr. Richard Kim",
             specialty: "General Surgery",
             selected: false,
@@ -192,7 +193,7 @@ const initialCategories: Category[] = [
         expanded: false,
         doctors: [
           {
-            id: "doc7",
+            id: "1553",
             name: "Dr. Patricia Moore",
             specialty: "Radiology",
             selected: false,
@@ -214,7 +215,7 @@ const initialCategories: Category[] = [
             ],
           },
           {
-            id: "doc8",
+            id: "1554",
             name: "Dr. Alexandra Taylor",
             specialty: "Radiology",
             selected: false,
@@ -380,11 +381,11 @@ export default function UsersPage() {
     <div className="flex h-full bg-gray-200 text-black gap-3">
       {/* Fixed Sidebar */}
       <div className="w-60 border-r border-gray-200 bg-gray-200 overflow-y-auto">
-        <div className="px-4 py-3 border-b border-gray-200">
+        <div className="px-4 py-5 border-b border-gray-200 flex items-end justify-stat">
           <h2 className="text-lg font-semibold">Get Appointment</h2>
         </div>
 
-        <div className="px-2 py-3">
+        <div className="px-2 pb-3">
           {categories.map((category) => (
             <div key={category.id} className="mb-2">
               {/* Main Category */}
@@ -411,13 +412,13 @@ export default function UsersPage() {
                     <div key={subCategory.id} className="ml-6 py-0 relative">
                       {/* Vertical line from parent to sub-category */}
                       <div
-                        className={`absolute left-[-9px] top-0 w-px bg-gray-500 ${
-                          isLastSubCategory ? "h-4.5" : "h-full"
+                        className={`absolute left-[-9px] top-0 w-px bg-[#4A5565] ${
+                          isLastSubCategory ? "h-4" : "h-full"
                         }`}
                       ></div>
 
                       {/* Horizontal line connecting to sub-category */}
-                      <div className="absolute left-[-9px] top-4.5 w-4 h-px bg-gray-500"></div>
+                      <div className="absolute left-[-9px] top-4 w-4 h-px bg-[#4A5565]"></div>
 
                       {/* Sub-category header with Select All checkbox */}
                       <div className="flex items-center justify-between p-2 rounded">
@@ -466,7 +467,7 @@ export default function UsersPage() {
                         <div className="ml-6 relative">
                           {/* Vertical line for doctors list - starts under sub-category chevron */}
                           <div
-                            className={`absolute left-[-9px] top-0 w-px bg-gray-500 ${
+                            className={`absolute left-[-9px] top-0 w-px bg-[#4A5565] ${
                               isLastSubCategory ? "h-full" : "h-full"
                             }`}
                             style={{ top: "-8px" }}
@@ -485,7 +486,7 @@ export default function UsersPage() {
                                 className="relative flex items-center p-2 rounded"
                               >
                                 {/* Horizontal line to doctor */}
-                                <div className="absolute left-[-9px] top-1/2 w-6 h-px bg-gray-500"></div>
+                                <div className="absolute left-[-9px] top-1/2 w-6 h-px bg-[#4A5565]"></div>
 
                                 {/* Vertical line continuation for non-last items */}
                                 {!isLastDoctor && (
@@ -528,7 +529,19 @@ export default function UsersPage() {
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden flex flex-col">
-        <div className="border-b border-gray-200 bg-gray-200 h-[68px]" />
+        <div className="border-b border-gray-200 bg-gray-200 h-[68px] flex items-center justify-end px-5 gap-6">
+          {varients.map((varient) => (
+            <div key={varient.name} className="flex items-center gap-2">
+              <div
+                className={`w-3.5 h-3.5 text-sm font-medium ${varient.color}`}
+              />
+              <span className="text-xs tracking-wider">{varient.name}</span>
+            </div>
+          ))}
+          <button className="text-xs px-4 py-2 bg-[#0060AE] text-white font-semibold">
+            Today&apos;s Doctor List
+          </button>
+        </div>
 
         {/* Appointments Grid with Horizontal Scroll */}
         <div className="flex-1 overflow-x-auto h-[calc(100vh - 104px)]">
@@ -542,7 +555,7 @@ export default function UsersPage() {
               </div>
             </div>
           ) : (
-            <div className="flex gap-3 min-w-max h-full">
+            <div className="flex gap-3.5 min-w-max h-full">
               {selectedDoctors.map((doctor) => (
                 <div
                   key={doctor.id}
@@ -550,9 +563,20 @@ export default function UsersPage() {
                 >
                   <div className="rounded-lg">
                     {/* Doctor Header */}
-                    <div className="p-4 border-b border-gray-200 bg-blue-50">
-                      <h3 className="font-semibold text-lg">{doctor.name}</h3>
-                      <p className="text-sm text-gray-600">
+                    <div className="p-3 border-b border-gray-200 bg-[#DFEFFF]">
+                      <div className="mb-1 flex items-center justify-between text-xs">
+                        <h1>#{doctor.id}</h1>
+                        <Info className="w-3.5 h-3.5 text-blue-800/90" />
+                      </div>
+                      <div className="font-semibold text-sm flex items-center justify-between">
+                        <h3 className="truncate">{doctor.name}</h3>
+                        <span>
+                          {doctor.appointments.length > 9
+                            ? doctor.appointments.length
+                            : `0${doctor.appointments.length}`}
+                        </span>
+                      </div>
+                      {/* <p className="text-sm text-gray-600">
                         {doctor.specialty}
                       </p>
                       <div className="mt-2 flex items-center">
@@ -560,17 +584,17 @@ export default function UsersPage() {
                         <span className="text-sm text-gray-600">
                           {doctor.appointments.length} appointment(s)
                         </span>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Appointments List */}
-                    <div className="p-4">
+                    <div className="p-2">
                       {doctor.appointments.map((appointment) => (
                         <div
                           key={appointment.id}
-                          className="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                          className="mb-4 px-2 py-1 bg-gray-50 border border-gray-200 rounded-xs hover:shadow-md transition-shadow"
                         >
-                          <div className="flex justify-between items-start mb-2">
+                          {/* <div className="flex justify-between items-start mb-2">
                             <div>
                               <h4 className="font-medium">
                                 {appointment.patientName}
@@ -590,6 +614,15 @@ export default function UsersPage() {
                           <div className="flex items-center text-sm text-gray-700">
                             <span className="font-medium">Time:</span>
                             <span className="ml-2">{appointment.time}</span>
+                          </div> */}
+                          <div className="pb-1 flex items-center justify-between text-xs font-semibold tracking-wider text-gray-800">
+                            <h1>{appointment.time}</h1>
+                            <span>{appointment.id}</span>
+                          </div>
+                          <div className="w-full bg-gray-200 h-0.5" />
+                          <div className="pt-1 flex items-center justify-between gap-2 text-xs font-semibold tracking-wider text-gray-800">
+                            <h1 className="truncate">{appointment.patientName}  </h1>
+                            <span className="truncate">{appointment.type}</span>
                           </div>
                         </div>
                       ))}
