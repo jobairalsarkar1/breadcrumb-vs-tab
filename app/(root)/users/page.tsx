@@ -145,7 +145,7 @@ const initialCategories: Category[] = [
                 patientName: "Amy Taylor",
                 time: "4:30 PM",
                 type: "New Patient",
-                status: "pending",
+                status: "cancelled",
               },
             ],
           },
@@ -367,13 +367,13 @@ export default function UsersPage() {
   const getStatusColor = (status: Appointment["status"]) => {
     switch (status) {
       case "confirmed":
-        return "bg-green-100 text-green-800";
+        return "bg-green-200 text-green-800";
       case "pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-200 text-yellow-800";
       case "cancelled":
-        return "bg-red-100 text-red-800";
+        return "bg-red-200 text-red-800";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-200 text-gray-800";
     }
   };
 
@@ -529,7 +529,7 @@ export default function UsersPage() {
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden flex flex-col">
-        <div className="border-b border-gray-200 bg-gray-200 h-[68px] flex items-center justify-end px-5 gap-6">
+        <div className="border-b border-gray-200 bg-gray-200 h-[68px] flex items-center justify-end px-4 gap-6">
           {varients.map((varient) => (
             <div key={varient.name} className="flex items-center gap-2">
               <div
@@ -555,7 +555,7 @@ export default function UsersPage() {
               </div>
             </div>
           ) : (
-            <div className="flex gap-3.5 min-w-max h-full">
+            <div className="pl-3 flex gap-3 min-w-max h-full">
               {selectedDoctors.map((doctor) => (
                 <div
                   key={doctor.id}
@@ -592,7 +592,9 @@ export default function UsersPage() {
                       {doctor.appointments.map((appointment) => (
                         <div
                           key={appointment.id}
-                          className="mb-4 px-2 py-1 bg-gray-50 border border-gray-200 rounded-xs hover:shadow-md transition-shadow"
+                          className={`mb-2 px-2 py-1 bg-gray-50 border border-gray-200 rounded-xs hover:shadow-xs transition-shadow ${getStatusColor(
+                            appointment.status
+                          )}`}
                         >
                           {/* <div className="flex justify-between items-start mb-2">
                             <div>
@@ -621,8 +623,16 @@ export default function UsersPage() {
                           </div>
                           <div className="w-full bg-gray-200 h-0.5" />
                           <div className="pt-1 flex items-center justify-between gap-2 text-xs font-semibold tracking-wider text-gray-800">
-                            <h1 className="truncate">{appointment.patientName}  </h1>
-                            <span className="truncate">{appointment.type}</span>
+                            <h1 className="truncate">
+                              {appointment.patientName}{" "}
+                            </h1>
+                            <span className="text-[10px] truncate uppercase text-white bg-gray-800 px-2 py-0.5 rounded-full">
+                              {appointment.type
+                                .split(/[-\s]+/)
+                                .filter(Boolean)
+                                .map((w) => w.slice(0, 1))
+                                .join("")}
+                            </span>
                           </div>
                         </div>
                       ))}
